@@ -1324,12 +1324,41 @@ CMD ["python", "app.py"]
 
 ### docker-compose.yml Update
 ```
-web:
-  build: .
-  ports:
-    - "5000:5000"
-  depends_on:
-    - db
+version: "3.9"
+
+services:
+  web:
+    build: .
+    container_name: flaskapp
+    ports:
+      - "5000:5000"
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:latest
+    container_name: redisdb
+    ports:
+      - "6379:6379"
+or else:
+
+version: "3.9"
+
+services:
+  web:
+    build:
+    ports:
+      -"5000:5000"
+    depends_on:
+      -db
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mydb
+    ports:
+      - "3306:3306"
 ```
 
 ### Build & Run
